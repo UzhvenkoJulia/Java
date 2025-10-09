@@ -1,0 +1,6 @@
+---number of cubes of each color---
+Red: 3
+Green: 1
+Blue: 2
+Yellow: 1
+everything in the file is processed: 7 records
