@@ -1,0 +1,7 @@
+5 red wooden
+10 blue metallic
+5 green cardboard
+10 red wooden
+8 yellow metallic
+5 red wooden
+10 blue cardboard

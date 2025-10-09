@@ -1,0 +1,5 @@
+---search results for cubes with size 10 centimeters---
+size: 10 centimeters, color: blue, material: metallic
+size: 10 centimeters, color: red, material: wooden
+size: 10 centimeters, color: blue, material: cardboard
+all found: 3 cubes
