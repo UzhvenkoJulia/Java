@@ -2,37 +2,37 @@ import java.io.*; // пакет (бібліотека), що містить кл
 import java.util.*;
 
 public class B0508 {
-    private static class Cube {
+    private static class Box {
         int size;
         String color;
-        String material;
-        public Cube(int size, String color, String material) {
+        String mat;
+        public Box(int size, String color, String mat) {
             this.size = size;
             this.color = color;
-            this.material = material;
+            this.mat = mat;
         }
         @Override
         public String toString() {
-            return String.format("size: %d centimeters, color: %s, material: %s", size, color, material);
+            return String.format("size: %d centimeters, color: %s, material: %s", size, color, mat);
         }
     }
-    private static final String INPUT_FILE = "cube_data.txt";  // змінна може бути ініціалізована лише один раз - final
-    private static final String OUTPUT_FILE_A = "cubes_by_size_result.txt";
-    private static final String OUTPUT_FILE_B = "cubes_by_color_count.txt";
-    private static List<Cube> readCubesFromFile() {
-        List<Cube> cubes = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(INPUT_FILE))) {
+    private static final String IN_FILE = "cube_data.txt";  // змінна може бути ініціалізована лише один раз - final
+    private static final String OUT_FILE_A = "cubes_by_size_result.txt";
+    private static final String OUT_FILE_B = "cubes_by_color_count.txt";
+    private static List<Box> readBoxes() {
+        List<Box> boxes = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(IN_FILE))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty())  // видалення пробілів - trim()
                     continue;
-                String[] parts = line.split("\\s+");  // використовується, щоб знайти або розділити рядок за будь-якою послідовністю пробілів, табуляцій або нових рядків, незалежно від їх к-сті
-                if (parts.length >= 3) {
+                String[] p = line.split("\\s+");  // використовується, щоб знайти або розділити рядок за будь-якою послідовністю пробілів, табуляцій або нових рядків, незалежно від їх к-сті
+                if (p.length >= 3) {
                     try {
-                        int size = Integer.parseInt(parts[0]);
-                        String color = parts[1];
-                        String material = parts[2];
-                        cubes.add(new Cube(size, color, material));
+                        int size = Integer.parseInt(p[0]);
+                        String color = p[1];
+                        String mat = p[2];
+                        boxes.add(new Box(size, color, mat));
                     } catch (NumberFormatException e) {
                         System.err.println("incorrect size format in line: " + line);
                     }
@@ -41,21 +41,21 @@ public class B0508 {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.err.println("input file " + INPUT_FILE + " not found");
+            System.err.println("input file " + IN_FILE + " not found");
             System.err.println("create a log file");
         } catch (IOException e) {
             System.err.println("can't read " + e.getMessage());
         }
-        return cubes;
+        return boxes;
     }
     
-    public static void findCubesBySize(List<Cube> cubes, int targetSize) throws IOException {
+    public static void findBySize(List<Box> boxes, int targetSize) throws IOException {
         int count = 0;
-        try (PrintWriter pw = new PrintWriter(new FileWriter(OUTPUT_FILE_A))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(OUT_FILE_A))) {
             pw.println("---search results for cubes with size " + targetSize + " centimeters---");
-            for (Cube cube : cubes) {
-                if (cube.size == targetSize) {
-                    pw.println(cube.toString());
+            for (Box box : boxes) {
+                if (box.size == targetSize) {
+                    pw.println(box.toString());
                     count++;
                 }
             }
@@ -64,43 +64,43 @@ public class B0508 {
             } else {
                 pw.println("all found: " + count + " cubes");
             }
-            System.out.println("✅ the result of the search by size is saved in the file: " + OUTPUT_FILE_A);
+            System.out.println("✅ the result of the search by size is saved in the file: " + OUT_FILE_A);
         } 
     }
 
-    public static void countCubesByColor(List<Cube> cubes) throws IOException {
-        Map<String, Integer> colorCounts = new HashMap<>();
-        for (Cube cube : cubes) {
-            String color = cube.color.toLowerCase();
-            colorCounts.put(color, colorCounts.getOrDefault(color, 0) + 1);
+    public static void countByColor(List<Box> boxes) throws IOException {
+        Map<String, Integer> counts = new HashMap<>();
+        for (Box box : boxes) {
+            String color = box.color.toLowerCase();
+            counts.put(color, counts.getOrDefault(color, 0) + 1);
         }
-        try (PrintWriter pw = new PrintWriter(new FileWriter(OUTPUT_FILE_B))) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(OUT_FILE_B))) {
             pw.println("---number of cubes of each color---");
 
-            for (Map.Entry<String, Integer> entry : colorCounts.entrySet()) {
+            for (Map.Entry<String, Integer> entry : counts.entrySet()) {
                 pw.println(String.format("%s: %d",
                         entry.getKey().substring(0, 1).toUpperCase() + entry.getKey().substring(1), 
                         entry.getValue()));
             }
-            pw.println("everything in the file is processed: " + cubes.size() + " records");
-            System.out.println("✅ the result of counting by colors is recorded in the file:" + OUTPUT_FILE_B);
+            pw.println("everything in the file is processed: " + boxes.size() + " records");
+            System.out.println("✅ the result of counting by colors is recorded in the file:" + OUT_FILE_B);
         } 
     }
 
     public static void main(String[] args) {
-        List<Cube> cubes = readCubesFromFile();
-        if (cubes.isEmpty()) {
+        List<Box> boxes = readBoxes();
+        if (boxes.isEmpty()) {
             System.out.println("\nno data to process, complete");
             return;
         }
         int sizeToFind = 10;
         try {
-            findCubesBySize(cubes, sizeToFind);
+            findBySize(boxes, sizeToFind);
         } catch (IOException e) {
             System.err.println("error when writing to file A: " + e.getMessage());
         }
         try {
-            countCubesByColor(cubes);
+            countByColor(boxes);
         } catch (IOException e) {
             System.err.println("error when writing to file B: " + e.getMessage());
         }
