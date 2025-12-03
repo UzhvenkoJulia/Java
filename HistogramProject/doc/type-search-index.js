@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"knu.mmf.histogram","l":"Histogram"},{"p":"knu.mmf.histogram","l":"Main"}];updateSearchResults();

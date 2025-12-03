@@ -1,0 +1,10 @@
+minHist: 0.0
+maxHist: 10.0
+M: 5
+totalCount: 5
+Frequencies:
+Bin 0: 0
+Bin 1: 2
+Bin 2: 1
+Bin 3: 1
+Bin 4: 1
